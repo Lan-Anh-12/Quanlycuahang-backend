@@ -34,7 +34,7 @@ public class SecurityConfig {
                     "http://localhost:5173", 
                     "http://localhost:5174",
                     "https://quanlycuahang-frontend.vercel.app", // THÊM DÒNG NÀY
-                    "https://*.vercel.app" // TÙY CHỌN: Cho phép tất cả các sub-domain Vercel
+                  
                 )); 
                 
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
