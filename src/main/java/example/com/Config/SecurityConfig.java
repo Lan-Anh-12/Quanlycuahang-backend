@@ -28,7 +28,15 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOriginPatterns(List.of("http://localhost:5173", "http://localhost:5174"));
+                
+                // THAY ĐỔI DÒNG NÀY: THÊM DOMAIN CÔNG KHAI CỦA VERCEL
+                config.setAllowedOriginPatterns(List.of(
+                    "http://localhost:5173", 
+                    "http://localhost:5174",
+                    "https://quanlycuahang-frontend.vercel.app", // THÊM DÒNG NÀY
+                    "https://*.vercel.app" // TÙY CHỌN: Cho phép tất cả các sub-domain Vercel
+                )); 
+                
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("Authorization", "Content-Type", "*"));
                 config.setAllowCredentials(true);
