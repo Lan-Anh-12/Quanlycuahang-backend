@@ -1,0 +1,40 @@
+| Hàm                 | Ý nghĩa                             |
+| ------------------- | ----------------------------------- |
+| `save(entity)`      | Lưu hoặc update 1 entity            |
+| `saveAll(entities)` | Lưu nhiều entity                    |
+| `findById(id)`      | Lấy 1 record theo ID                |
+| `existsById(id)`    | Kiểm tra có tồn tại bản ghi theo ID |
+| `findAll()`         | Lấy toàn bộ record                  |
+| `findAllById(ids)`  | Lấy nhiều record theo danh sách ID  |
+| `count()`           | Đếm số record                       |
+| `delete(entity)`    | Xóa 1 entity                        |
+| `deleteById(id)`    | Xóa theo ID                         |
+| `deleteAll()`       | Xóa hết                             |
+| Hàm                                       | Ý nghĩa                     |
+| ----------------------------------------- | --------------------------- |
+| `findAll(Pageable pageable)`              | Lấy dữ liệu có phân trang   |
+| `findAll(Sort sort)`                      | Lấy dữ liệu có sắp xếp      |
+| `findAll(Pageable pageable).getContent()` | Lấy nội dung trang hiện tại |
+| Hàm                       | Ý nghĩa                                            |
+| ------------------------- | -------------------------------------------------- |
+| `findAll()`               | Lấy toàn bộ (ghi đè CrudRepository nhưng mạnh hơn) |
+| `findAll(Sort sort)`      | Sắp xếp nâng cao                                   |
+| `findAllById(ids)`        | Lấy nhiều theo ID                                  |
+| `saveAndFlush(entity)`    | Lưu và flush ngay lập tức (đẩy xuống DB liền)      |
+| `deleteInBatch(entities)` | Xóa hàng loạt (trong 1 câu SQL)                    |
+| `deleteAllInBatch()`      | Xóa tất cả trong 1 batch                           |
+| `getOne(id)`              | Lấy entity dưới dạng lazy                          |
+| `getById(id)`             | Thay thế getOne (lazy load)                        |
+| `flush()`                 | Đẩy tất cả thay đổi xuống DB ngay lập tức          |
+mvn spring-boot:run
+
+1. Tạo Entity (ví dụ: User, DonHang)
+2. Tạo Repository (UserRepository, DonHangRepository)
+3. Tạo Service (AuthServiceImpl, DonHangService)
+4. Tạo Controller (AuthController, DonHangController)
+
+đẩy lên git:
+git add .
+git commit -m " ... "
+git push
+
