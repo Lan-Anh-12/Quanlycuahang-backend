@@ -4,19 +4,21 @@ import example.com.Service.auth.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +34,7 @@ public class SecurityConfig {
             // 1. Tắt CSRF vì sử dụng JWT (stateless)
             .csrf(csrf -> csrf.disable())
             
-            // 2. Kích hoạt và cấu hình CORS
+            // 2. Kích hoạt CORS và sử dụng CorsConfigurationSource Bean bên dưới
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
             // 3. Cấu hình Session là STATELESS (quan trọng cho JWT)
@@ -40,10 +42,11 @@ public class SecurityConfig {
             
             // 4. Cấu hình ủy quyền (Authorization)
             .authorizeHttpRequests(auth -> auth
-                // Cho phép công khai các API Auth và Pre-flight OPTIONS
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Rất quan trọng cho CORS
-                .requestMatchers("/api/auth/login", "/api/auth/refresh").permitAll()
+                // CỰC KỲ QUAN TRỌNG: Cho phép Pre-flight OPTIONS qua mọi đường dẫn
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
                 
+                // Cho phép công khai các API Auth (Login/Refresh)
+                .requestMatchers("/api/auth/login", "/api/auth/refresh").permitAll()
                 
                 // Các request khác yêu cầu xác thực
                 .anyRequest().authenticated());
@@ -62,16 +65,18 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        // **QUAN TRỌNG: SỬ DỤNG setAllowedOrigins CHO DOMAIN CỤ THỂ**
+        // 🔑 Cần liệt kê chính xác origin frontend của bạn
         config.setAllowedOrigins(Arrays.asList(
             "https://quanlycuahang-frontend.vercel.app", // Domain Vercel của bạn
             "http://localhost:3000" // Để phát triển cục bộ
         ));
         
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         
-        // Cho phép gửi cookie hoặc Authorization header (rất quan trọng)
+        // 🔑 SỬ DỤNG "*" CHO HEADERS để đảm bảo tất cả các header (Authorization, Content-Type, v.v.) được chấp nhận
+        config.setAllowedHeaders(List.of("*"));
+        
+        // Cho phép gửi cookie hoặc Authorization header
         config.setAllowCredentials(true); 
         
         // Đặt thời gian tồn tại của Pre-flight request (trong giây)
