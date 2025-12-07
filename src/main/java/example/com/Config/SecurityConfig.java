@@ -31,7 +31,7 @@ public class SecurityConfig {
                 
                 // THAY ĐỔI DÒNG NÀY: THÊM DOMAIN CÔNG KHAI CỦA VERCEL
                 config.setAllowedOriginPatterns(List.of(
-                    "https://quanlycuahang-frontend.vercel.app", // THÊM DÒNG NÀY
+                    "https://quanlycuahang-frontend.vercel.app"// THÊM DÒNG NÀY
                   
                 )); 
                 
