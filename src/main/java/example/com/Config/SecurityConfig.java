@@ -41,8 +41,9 @@ public class SecurityConfig {
             // 4. Cấu hình ủy quyền (Authorization)
             .authorizeHttpRequests(auth -> auth
                 // Cho phép công khai các API Auth và Pre-flight OPTIONS
-                .requestMatchers("/api/auth/login", "/api/auth/refresh").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Rất quan trọng cho CORS
+                .requestMatchers("/api/auth/login", "/api/auth/refresh").permitAll()
+                
                 
                 // Các request khác yêu cầu xác thực
                 .anyRequest().authenticated());
